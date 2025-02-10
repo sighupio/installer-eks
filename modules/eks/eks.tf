@@ -204,7 +204,7 @@ module "cluster" {
   # self-managed node groups
   worker_groups                        = []
   worker_groups_launch_template        = local.worker_groups
-  workers_group_defaults               = {}
+  workers_group_defaults               = var.workers_group_defaults
   worker_additional_security_group_ids = [aws_security_group.node_pool_shared.id]
   worker_sg_ingress_from_port          = 22
   workers_role_name                    = var.workers_role_name
