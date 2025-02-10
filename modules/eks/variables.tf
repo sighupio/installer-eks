@@ -233,6 +233,16 @@ variable "workers_role_name" {
   default     = ""
 }
 
+variable "workers_group_defaults" {
+  type = any
+  description = "Override default values for self-managed eks node pool."
+  default = {
+    metadata_http_endpoint               = "enabled"
+    metadata_http_tokens                 = "optional"
+    metadata_http_put_response_hop_limit = null
+  }
+}
+
 variable "node_pools_global_ami_type" {
   type        = string
   description = "Global default AMI type used for EKS worker nodes. This will apply to all node pools unless overridden by a specific node pool."
