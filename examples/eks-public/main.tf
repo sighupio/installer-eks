@@ -48,18 +48,16 @@ resource "tls_private_key" "ssh" {
 module "fury_public_example" {
   source = "../../modules/eks"
 
-  cluster_name               = var.cluster_name # make sure to use the same name you used in the VPC and VPN module
-  cluster_version            = "1.29"
-  cluster_log_retention_days = 1
-
-  # availability_zone_names = ["eu-west-1a", "eu-west-1b"]
-  subnets = data.terraform_remote_state.vpc.outputs.private_subnets
-  vpc_id  = data.terraform_remote_state.vpc.outputs.vpc_id
-
+  cluster_name                    = var.cluster_name # make sure to use the same name you used in the VPC and VPN module
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = false
+  cluster_enabled_log_types       = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  cluster_log_retention_days      = 1
+  cluster_version                 = "1.31"
 
-  ssh_public_key = tls_private_key.ssh.public_key_openssh
+  eks_map_users    = []
+  eks_map_roles    = []
+  eks_map_accounts = []
 
   node_pools = [
     {
@@ -143,7 +141,7 @@ module "fury_public_example" {
       name : "m5-node-pool-alinux2023-self-managed"
       min_size : 1
       max_size : 2
-      ami_type: "alinux2023"
+      ami_type : "alinux2023"
       instance_type : "m5.large"
       volume_size : 20
     },
@@ -209,7 +207,7 @@ module "fury_public_example" {
       name : "m5-node-pool-alinux2023-arm64-eks-managed"
       min_size : 1
       max_size : 2
-      ami_type: "alinux2023"
+      ami_type : "alinux2023"
       instance_type : "t4g.large"
       spot_instance : true # optionally create spot instances
       subnets : null
@@ -227,7 +225,7 @@ module "fury_public_example" {
       name : "m5-node-pool-alinux2023-eks-managed"
       min_size : 1
       max_size : 2
-      ami_type: "alinux2023"
+      ami_type : "alinux2023"
       instance_type : "m5.large"
       spot_instance : true # optionally create spot instances
       subnets : null
@@ -242,12 +240,19 @@ module "fury_public_example" {
     }
   ]
 
+  ssh_public_key = tls_private_key.ssh.public_key_openssh
+  subnets        = data.terraform_remote_state.vpc.outputs.private_subnets
+
   tags = {
     Environment : "kfd-development"
   }
 
-  eks_map_users             = []
-  eks_map_roles             = []
-  eks_map_accounts          = []
-  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  # Enable IDMSv2
+  workers_group_defaults = {
+    metadata_http_endpoint               = "enabled"
+    metadata_http_tokens                 = "required"
+    metadata_http_put_response_hop_limit = 2
+  }
+
+  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
 }
