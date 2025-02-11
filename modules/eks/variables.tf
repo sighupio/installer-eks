@@ -208,6 +208,7 @@ variable "ssh_to_nodes_allowed_cidr_blocks" {
   type        = list(string)
   default     = null
 }
+
 variable "cluster_enabled_log_types" {
   description = "List of log types that will be enabled for the EKS cluster. Can be a subset of ['api', 'audit', 'authenticator', 'controllerManager', 'scheduler'] or an empty list."
   type        = list(string)
@@ -218,7 +219,6 @@ variable "cluster_enabled_log_types" {
     condition     = length(var.cluster_enabled_log_types) == 0 || alltrue([for val in var.cluster_enabled_log_types : contains(["api", "audit", "authenticator", "controllerManager", "scheduler"], val)])
     error_message = "The log type must be one of the following: api, audit, authenticator, controllerManager, scheduler, or the list must be empty."
   }
-
 }
 
 variable "cluster_iam_role_name" {
@@ -233,6 +233,16 @@ variable "workers_role_name" {
   default     = ""
 }
 
+variable "node_pools_global_ami_type" {
+  type        = string
+  description = "Global default AMI type used for EKS worker nodes. This will apply to all node pools unless overridden by a specific node pool."
+  default     = "alinux2"
+  validation {
+    condition     = contains(["alinux2", "alinux2023"], var.node_pools_global_ami_type)
+    error_message = "The global AMI type must be either 'alinux2' or 'alinux2023'."
+  }
+}
+
 variable "workers_group_defaults" {
   type = any
   description = "Override default values for self-managed eks node pool."
@@ -243,12 +253,3 @@ variable "workers_group_defaults" {
   }
 }
 
-variable "node_pools_global_ami_type" {
-  type        = string
-  description = "Global default AMI type used for EKS worker nodes. This will apply to all node pools unless overridden by a specific node pool."
-  default     = "alinux2"
-  validation {
-    condition     = contains(["alinux2", "alinux2023"], var.node_pools_global_ami_type)
-    error_message = "The global AMI type must be either 'alinux2' or 'alinux2023'."
-  }
-}
