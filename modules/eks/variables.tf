@@ -1,13 +1,46 @@
 # AWS EKS module variables
 
-variable "cluster_name" {
-  type        = string
-  description = "Unique cluster name. Used in multiple resources to identify your cluster resources"
+variable "cluster_endpoint_private_access" {
+  description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled"
+  type        = bool
+  default     = true
 }
 
-variable "cluster_version" {
+variable "cluster_endpoint_private_access_cidrs" {
+  description = "List of CIDR blocks which can access the Amazon EKS private API server endpoint"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "cluster_endpoint_public_access" {
+  description = "Indicates whether or not the Amazon EKS public API server endpoint is enabled"
+  type        = bool
+  default     = false
+}
+
+variable "cluster_endpoint_public_access_cidrs" {
+  description = "List of CIDR blocks which can access the Amazon EKS public API server endpoint"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "cluster_enabled_log_types" {
+  description = "List of log types that will be enabled for the EKS cluster. Can be a subset of ['api', 'audit', 'authenticator', 'controllerManager', 'scheduler'] or an empty list."
+  type        = list(string)
+  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+  nullable = false
+  validation {
+    condition     = length(var.cluster_enabled_log_types) == 0 || alltrue([for val in var.cluster_enabled_log_types : contains(["api", "audit", "authenticator", "controllerManager", "scheduler"], val)])
+    error_message = "The log type must be one of the following: api, audit, authenticator, controllerManager, scheduler, or the list must be empty."
+  }
+
+}
+
+variable "cluster_iam_role_name" {
+  description = "IAM role name for the EKS cluster"
   type        = string
-  description = "Kubernetes Cluster Version. Look at the cloud providers documentation to discover available versions. EKS example -> 1.25, GKE example -> 1.25.7-gke.1000"
+  default     = ""
 }
 
 variable "cluster_log_retention_days" {
@@ -21,19 +54,69 @@ variable "cluster_log_retention_days" {
   }
 }
 
-variable "vpc_id" {
+variable "cluster_name" {
   type        = string
-  description = "VPC ID where the Kubernetes cluster will be hosted"
+  description = "Unique cluster name. Used in multiple resources to identify your cluster resources"
 }
 
-variable "subnets" {
+variable "cluster_service_ipv4_cidr" {
+  type        = string
+  description = "The CIDR block to assign Kubernetes service IP addresses from"
+  default     = null
+}
+
+variable "cluster_version" {
+  type        = string
+  description = "Kubernetes Cluster Version. Look at the cloud providers documentation to discover available versions. EKS example -> 1.25, GKE example -> 1.25.7-gke.1000"
+}
+
+variable "eks_map_accounts" {
+  description = "Additional AWS account numbers to add to the aws-auth configmap"
   type        = list(string)
-  description = "List of subnets where the cluster will be hosted"
+
+  # example = [
+  #   "777777777777",
+  #   "888888888888",
+  # ]
 }
 
-variable "ssh_public_key" {
-  type        = string
-  description = "Cluster administrator public ssh key. Used to access cluster nodes with the operator_ssh_user"
+variable "eks_map_roles" {
+  description = "Additional IAM roles to add to the aws-auth configmap"
+  type = list(object({
+    rolearn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  # example = [
+  #   {
+  #     rolearn  = "arn:aws:iam::66666666666:role/role1"
+  #     username = "role1"
+  #     groups   = ["system:masters"]
+  #   },
+  # ]
+}
+
+variable "eks_map_users" {
+  description = "Additional IAM users to add to the aws-auth configmap"
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  # example = [
+  #   {
+  #     userarn  = "arn:aws:iam::66666666666:user/user1"
+  #     username = "user1"
+  #     groups   = ["system:masters"]
+  #   },
+  #   {
+  #     userarn  = "arn:aws:iam::66666666666:user/user2"
+  #     username = "user2"
+  #     groups   = ["system:masters"]
+  #   },
+  # ]
 }
 
 variable "node_pools" {
@@ -105,6 +188,16 @@ variable "node_pools" {
   default = []
 }
 
+variable "node_pools_global_ami_type" {
+  type        = string
+  description = "Global default AMI type used for EKS worker nodes. This will apply to all node pools unless overridden by a specific node pool."
+  default     = "alinux2"
+  validation {
+    condition     = contains(["alinux2", "alinux2023"], var.node_pools_global_ami_type)
+    error_message = "The global AMI type must be either 'alinux2' or 'alinux2023'."
+  }
+}
+
 variable "node_pools_launch_kind" {
   description = "Which kind of node pools to create. Valid values are: launch_templates, launch_configurations, both."
   type        = string
@@ -116,115 +209,26 @@ variable "node_pools_launch_kind" {
   }
 }
 
-variable "tags" {
-  type        = map(string)
-  description = "The tags to apply to all resources"
-  default     = {}
-}
-
-variable "eks_map_accounts" {
-  description = "Additional AWS account numbers to add to the aws-auth configmap"
-  type        = list(string)
-
-  # example = [
-  #   "777777777777",
-  #   "888888888888",
-  # ]
-}
-
-variable "eks_map_roles" {
-  description = "Additional IAM roles to add to the aws-auth configmap"
-  type = list(object({
-    rolearn  = string
-    username = string
-    groups   = list(string)
-  }))
-
-  # example = [
-  #   {
-  #     rolearn  = "arn:aws:iam::66666666666:role/role1"
-  #     username = "role1"
-  #     groups   = ["system:masters"]
-  #   },
-  # ]
-}
-
-variable "eks_map_users" {
-  description = "Additional IAM users to add to the aws-auth configmap"
-  type = list(object({
-    userarn  = string
-    username = string
-    groups   = list(string)
-  }))
-
-  # example = [
-  #   {
-  #     userarn  = "arn:aws:iam::66666666666:user/user1"
-  #     username = "user1"
-  #     groups   = ["system:masters"]
-  #   },
-  #   {
-  #     userarn  = "arn:aws:iam::66666666666:user/user2"
-  #     username = "user2"
-  #     groups   = ["system:masters"]
-  #   },
-  # ]
-}
-
-variable "cluster_endpoint_private_access" {
-  description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled"
-  type        = bool
-  default     = true
-}
-
-variable "cluster_endpoint_private_access_cidrs" {
-  description = "List of CIDR blocks which can access the Amazon EKS private API server endpoint"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
-}
-
-variable "cluster_endpoint_public_access" {
-  description = "Indicates whether or not the Amazon EKS public API server endpoint is enabled"
-  type        = bool
-  default     = false
-}
-
-variable "cluster_endpoint_public_access_cidrs" {
-  description = "List of CIDR blocks which can access the Amazon EKS public API server endpoint"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
-}
-
-variable "cluster_service_ipv4_cidr" {
+variable "ssh_public_key" {
   type        = string
-  description = "The CIDR block to assign Kubernetes service IP addresses from"
-  default     = null
+  description = "Cluster administrator public ssh key. Used to access cluster nodes with the operator_ssh_user"
 }
-
-# Other variables
 
 variable "ssh_to_nodes_allowed_cidr_blocks" {
   description = "List of CIDR blocks which can access via SSH the Amazon EKS nodes"
   type        = list(string)
   default     = null
 }
-variable "cluster_enabled_log_types" {
-  description = "List of log types that will be enabled for the EKS cluster. Can be a subset of ['api', 'audit', 'authenticator', 'controllerManager', 'scheduler'] or an empty list."
+
+variable "subnets" {
   type        = list(string)
-  default     = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-
-  nullable = false
-  validation {
-    condition     = length(var.cluster_enabled_log_types) == 0 || alltrue([for val in var.cluster_enabled_log_types : contains(["api", "audit", "authenticator", "controllerManager", "scheduler"], val)])
-    error_message = "The log type must be one of the following: api, audit, authenticator, controllerManager, scheduler, or the list must be empty."
-  }
-
+  description = "List of subnets where the cluster will be hosted"
 }
 
-variable "cluster_iam_role_name" {
-  description = "IAM role name for the EKS cluster"
-  type        = string
-  default     = ""
+variable "tags" {
+  type        = map(string)
+  description = "The tags to apply to all resources"
+  default     = {}
 }
 
 variable "workers_role_name" {
@@ -243,12 +247,7 @@ variable "workers_group_defaults" {
   }
 }
 
-variable "node_pools_global_ami_type" {
+variable "vpc_id" {
   type        = string
-  description = "Global default AMI type used for EKS worker nodes. This will apply to all node pools unless overridden by a specific node pool."
-  default     = "alinux2"
-  validation {
-    condition     = contains(["alinux2", "alinux2023"], var.node_pools_global_ami_type)
-    error_message = "The global AMI type must be either 'alinux2' or 'alinux2023'."
-  }
+  description = "VPC ID where the Kubernetes cluster will be hosted"
 }
