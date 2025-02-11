@@ -55,17 +55,15 @@ resource "tls_private_key" "ssh" {
 module "fury_private_example" {
   source = "../../modules/eks"
 
-  cluster_name               = var.cluster_name # make sure to use the same name you used in the VPC and VPN module
-  cluster_version            = "1.25"
-  cluster_log_retention_days = 1
-
-  availability_zone_names = ["eu-west-1a", "eu-west-1b"]
-  subnets                 = data.terraform_remote_state.vpc.outputs.private_subnets
-  vpc_id                  = data.terraform_remote_state.vpc.outputs.vpc_id
-
+  cluster_name                          = var.cluster_name # make sure to use the same name you used in the VPC and VPN module
   cluster_endpoint_private_access_cidrs = data.terraform_remote_state.vpn.outputs.vpn_instances_private_ips_as_cidrs
+  cluster_enabled_log_types             = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  cluster_log_retention_days            = 1
+  cluster_version                       = "1.31"
 
-  ssh_public_key = tls_private_key.ssh.public_key_openssh
+  eks_map_users    = []
+  eks_map_roles    = []
+  eks_map_accounts = []
 
   node_pools = [
     {
@@ -161,12 +159,19 @@ module "fury_private_example" {
     },
   ]
 
+  ssh_public_key = tls_private_key.ssh.public_key_openssh
+  subnets        = data.terraform_remote_state.vpc.outputs.private_subnets
+
   tags = {
     Environment : "kfd-development"
   }
 
-  eks_map_users             = []
-  eks_map_roles             = []
-  eks_map_accounts          = []
-  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
+
+  # Enable IDMSv2
+  workers_group_defaults = {
+    metadata_http_endpoint               = "enabled"
+    metadata_http_tokens                 = "required"
+    metadata_http_put_response_hop_limit = 2
+  }
 }
