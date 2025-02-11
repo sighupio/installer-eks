@@ -168,4 +168,11 @@ module "fury_private_example" {
   eks_map_roles             = []
   eks_map_accounts          = []
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+
+  workers_group_defaults = {
+    metadata_http_endpoint               = "enabled"
+    metadata_http_tokens                 = "required"
+    metadata_http_put_response_hop_limit = 2
+  }
 }
