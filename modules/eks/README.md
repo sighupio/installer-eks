@@ -1,8 +1,8 @@
 <!-- BEGIN_TF_DOCS -->
 
-# Fury EKS Installer - EKS module
+# EKS Installer - EKS module
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 ## Requirements
 
@@ -405,5 +405,5 @@ module "fury_public_example" {
 }
 ```
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 <!-- END_TF_DOCS -->

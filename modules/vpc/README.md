@@ -1,8 +1,8 @@
 <!-- BEGIN_TF_DOCS -->
 
-# Fury EKS Installer - vpc module
+# EKS Installer - vpc module
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 ## Requirements
 
@@ -93,5 +93,5 @@ module "vpc" {
 }
 ```
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 <!-- END_TF_DOCS -->

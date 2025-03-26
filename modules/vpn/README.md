@@ -1,8 +1,8 @@
 <!-- BEGIN_TF_DOCS -->
 
-# Fury EKS Installer - vpn module
+# EKS Installer - vpn module
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 ## Requirements
 
@@ -99,5 +99,5 @@ module "vpn" {
 }
 ```
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 <!-- END_TF_DOCS -->

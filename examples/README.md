@@ -1,4 +1,4 @@
-# Fury EKS Installer Example
+# EKS Installer Example
 
 This folder contains working examples of the terraform modules provided by this Fury Installer.
 

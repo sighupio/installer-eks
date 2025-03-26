@@ -1,19 +1,23 @@
 <!-- markdownlint-disable MD033 -->
-<h1>
-    <img src="./docs/assets/fury_installer.png?raw=true" align="left" width="105" style="margin-right: 15px"/>
-    Fury EKS Installer
+<h1 align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sighupio/distribution/refs/heads/main/docs/assets/white-logo.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/sighupio/distribution/refs/heads/main/docs/assets/black-logo.png">
+  <img alt="Shows a black logo in light color mode and a white one in dark color mode." src="https://raw.githubusercontent.com/sighupio/distribution/refs/heads/main/docs/assets/white-logo.png">
+</picture><br/>
+  EKS Installer
 </h1>
 <!-- markdownlint-enable MD033 -->
 
 ![Release](https://img.shields.io/badge/Latest%20Release-v3.1.2-blue)
-![License](https://img.shields.io/github/license/sighupio/fury-eks-installer?label=License)
+![License](https://img.shields.io/github/license/sighupio/installer-eks?label=License)
 [![Slack](https://img.shields.io/badge/slack-@kubernetes/fury-yellow.svg?logo=slack&label=Slack)](https://kubernetes.slack.com/archives/C0154HYTAQH)
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
-**Fury EKS Installer** deploys a production-grade Kubernetes Fury cluster on Amazon Elastic Kubernetes Services (EKS).
+**EKS Installer** deploys a production-grade SIGHUP Distribution on Amazon Elastic Kubernetes Services (EKS).
 
-If you are new to Kubernetes Fury please refer to the [official documentation][kfd-docs] on how to get started.
+If you are new to SIGHUP Distribution please refer to the [official documentation][skd-docs] on how to get started.
 
 ## Modules
 
@@ -29,11 +33,7 @@ Click on each module to see its full documentation.
 
 ## Architecture
 
-The EKS installers deploys and configures a production-ready EKS cluster without having to learn all internals of the service.
-
-![Fury Architecture](./docs/assets/fury_installer_architecture.png)
-
-The [EKS module][eks-module] deploys a **private control plane** cluster, where the control plane endpoint is not publicly accessible.
+The [EKS module][eks-module] deploys an **EKS** cluster.
 
 The [VPC module][vpc-module] setups all the necessary networking infrastructure.
 The [VPN module][vpn-module] setups one or more bastion hosts with an OpenVPN server.
@@ -69,7 +69,7 @@ To create the cluster via the installers:
 
 Please refer to each module documentation and the [examples](examples/) folder for more details.
 
-> You can follow the [Fury on EKS quick start guide][fury-eks-quickstart] for a more detailed walkthrough
+> You can follow the [SD on EKS quick start guide][sd-eks-quickstart] for a more detailed walkthrough
 
 ## Useful links
 
@@ -82,22 +82,22 @@ Please refer to each module documentation and the [examples](examples/) folder f
 <!-- Links -->
 
 [eks installer docs]: https://docs.kubernetesfury.com/docs/installers/managed/eks/
-[fury-eks-quickstart]: https://docs.kubernetesfury.com/docs/fury-on-eks
-[vpc-module]: https://github.com/sighupio/fury-eks-installer/tree/master/modules/vpc
-[vpn-module]: https://github.com/sighupio/fury-eks-installer/tree/master/modules/vpn
-[eks-module]: https://github.com/sighupio/fury-eks-installer/tree/master/modules/eks
-[kfd-docs]: https://docs.kubernetesfury.com/docs/distribution/
+[sd-eks-quickstart]: https://docs.kubernetesfury.com/docs/fury-on-eks
+[vpc-module]: https://github.com/sighupio/installer-eks/tree/master/modules/vpc
+[vpn-module]: https://github.com/sighupio/installer-eks/tree/master/modules/vpn
+[eks-module]: https://github.com/sighupio/installer-eks/tree/master/modules/eks
+[skd-docs]: https://docs.kubernetesfury.com/docs/distribution/
 
 [furyagent]: https://github.com/sighupio/furyagent
 [tunnelblick]: https://tunnelblick.net/downloads.html
 [openvpn-connect]: https://openvpn.net/vpn-client/
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 <!-- <FOOTER> -->
 
 ### Reporting Issues
 
-In case you experience any problem with the module, please [open a new issue](https://github.com/sighupio/fury-eks-installer/issues/new).
+In case you experience any problem with the module, please [open a new issue](https://github.com/sighupio/installer-eks/issues/new).
 
 ## License
 

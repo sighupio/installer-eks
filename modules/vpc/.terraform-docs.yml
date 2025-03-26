@@ -15,9 +15,9 @@ sections:
 
 content: |-
 
-  # Fury EKS Installer - vpc module
+  # EKS Installer - vpc module
 
-  <!-- <KFD-DOCS> -->
+  <!-- <SD-DOCS> -->
 
   {{ .Requirements }}
 
@@ -33,7 +33,7 @@ content: |-
   {{ include "../../examples/vpc/main.tf" }}
   ```
 
-  <!-- </KFD-DOCS> -->
+  <!-- </SD-DOCS> -->
 
 output:
   file: "README.md"
