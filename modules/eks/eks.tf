@@ -133,7 +133,7 @@ locals {
         { Name : "${var.cluster_name}-${lookup(node_pool, "name")}" }
       )
       update_default_version = true
-      version = coalesce(node_pool.version, var.cluster_version)
+      version                = coalesce(node_pool.version, var.cluster_version)
 
     } if lookup(node_pool, "type") == "eks-managed"
   ]
@@ -176,7 +176,7 @@ module "cluster" {
   # self-managed node groups
   worker_groups                        = var.node_pools_launch_kind == "launch_configurations" || var.node_pools_launch_kind == "both" ? local.worker_groups : []
   worker_groups_launch_template        = var.node_pools_launch_kind == "launch_templates" || var.node_pools_launch_kind == "both" ? local.worker_groups : []
-  workers_group_defaults               = {}
+  workers_group_defaults               = var.workers_group_defaults
   worker_additional_security_group_ids = [aws_security_group.node_pool_shared.id]
   worker_sg_ingress_from_port          = 22
   workers_role_name                    = var.workers_role_name
