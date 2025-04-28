@@ -1,0 +1,15 @@
+apiVersion: atmos/v1
+kind: AtmosVendorConfig
+metadata:
+  name: aws-modules-vendor
+  description: Vendored modules for installer-eks
+spec:
+  sources:
+    - component: "vpc"
+      source: "github.com/terraform-aws-modules/terraform-aws-vpc.git//?ref=v5.1.2"
+      targets:
+        - "./modules/vpc/vendor/terraform-aws-modules/vpc/aws"
+    - component: "eks"
+      source: "github.com/terraform-aws-modules/terraform-aws-eks.git//?ref=v17.24.0"
+      targets:
+        - "./modules/eks/vendor/terraform-aws-modules/eks/aws"
