@@ -2,23 +2,24 @@
 
 To update the eks package, follow the next steps.
 
-Update the `eks` version in `installer-eks/vendor.yaml` with the new tag version.
+Update the `eks` version in `installer-eks/furyfile.yaml` with the new tag version.
 
 ```yaml
-- component: "eks"
-source: "github.com/terraform-aws-modules/terraform-aws-eks.git//?ref=v17.24.0"
-targets:
-- "vendor/modules/terraform-aws-modules/eks/aws"
+  - name: terraform-aws-eks
+    url: git@github.com:terraform-aws-modules/terraform-aws-eks.git
+    version: v17.24.0
 ```
 
 Run the following command:
 
 ```bash
-atmos vendor pull
-rm -rf ./modules/eks/vendor/modules/terraform-aws-modules/eks/aws/.git
-rm -rf ./modules/vpc/vendor/modules/terraform-aws-modules/vpc/aws/.git
-```
+furyctl legacy vendor
+rm -rf ./modules/eks/vendor/modules && mkdir -p ./modules/eks/vendor/modules/
+mv ./vendor/external/terraform-aws-eks ./modules/eks/vendor/modules
 
-Delete the `.git` directory in `
+rm -rf ./modules/vpc/vendor/modules && mkdir -p ./modules/vpc/vendor/modules/
+mv ./vendor/external/terraform-aws-vpc ./modules/vpc/vendor/modules
+rm -rf ./vendor
+```
 
 Do the necessary modifications to the terraform files in this directory and then commit.

@@ -52,7 +52,6 @@ The bastion host includes an OpenVPN instance easily manageable by using [furyag
 - **AWS Access Credentials** of an AWS Account with the following [IAM permissions](https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md).
 - **terraform** `>=1.3.0`
 - `ssh` or **OpenVPN Client** - [Tunnelblick][tunnelblick] (on macOS) or [OpenVPN Connect][openvpn-connect] (for other OS) are recommended.
-- **atmos** (only for maintenance) `>1.173.0`
 
 ### Create EKS Cluster
 
