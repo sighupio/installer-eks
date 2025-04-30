@@ -6,5 +6,3 @@ external:
   - name: terraform-aws-vpc
     url: git@github.com:terraform-aws-modules/terraform-aws-vpc.git
     version: v5.1.2
-
-vendorFolderName: /Users/filipporavaglia/work/installer-eks/vendor
