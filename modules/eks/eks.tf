@@ -140,8 +140,7 @@ locals {
 }
 
 module "cluster" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "17.24.0"
+  source  = "./vendor/modules/terraform-aws-eks"
 
   cluster_create_timeout = "30m"
   cluster_delete_timeout = "30m"

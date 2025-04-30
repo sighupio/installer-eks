@@ -1,0 +1,8 @@
+
+external:
+  - name: terraform-aws-eks
+    url: git@github.com:terraform-aws-modules/terraform-aws-eks.git
+    version: v17.24.0
+  - name: terraform-aws-vpc
+    url: git@github.com:terraform-aws-modules/terraform-aws-vpc.git
+    version: v5.1.2
