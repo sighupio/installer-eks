@@ -11,14 +11,16 @@ locals {
   ]
 
   self_managed_node_pools_userdata_template_file = {
-    for node_pool in local.self_managed_node_pools : lookup(node_pool, "name") => coalesce(node_pool.ami_type, var.node_pools_global_ami_type) == "alinux2023" ? {
-      userdata_template_file = "${path.module}/templates/al2023_user_data.tpl"
-      userdata_template_extra_args = {
-        cluster_service_cidr = var.cluster_service_ipv4_cidr
-      }
-    } : {}
+    for node_pool in local.self_managed_node_pools : lookup(node_pool, "name") => merge(
+      {},
+      coalesce(node_pool.ami_type, var.node_pools_global_ami_type) == "alinux2023" ? {
+        userdata_template_file = "${path.module}/templates/al2023_user_data.tpl"
+        userdata_template_extra_args = {
+          cluster_service_cidr = var.cluster_service_ipv4_cidr
+        }
+      } : {}
+    )
   }
-
   worker_groups = [
     for node_pool in local.self_managed_node_pools :
     merge({
