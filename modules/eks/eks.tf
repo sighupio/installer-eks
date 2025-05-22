@@ -10,14 +10,15 @@ locals {
     for node_pool in var.node_pools : node_pool if lookup(node_pool, "type") == "self-managed" || lookup(node_pool, "type") == null
   ]
 
-  self_managed_node_pools_userdata_template_file = {
+   self_managed_node_pools_userdata_template_file = {
     for node_pool in local.self_managed_node_pools : lookup(node_pool, "name") => merge(
-      {},
-      coalesce(node_pool.ami_type, var.node_pools_global_ami_type) == "alinux2023" ? {
-        userdata_template_file = "${path.module}/templates/al2023_user_data.tpl"
+      {
         userdata_template_extra_args = {
           cluster_service_cidr = var.cluster_service_ipv4_cidr
         }
+      },
+      coalesce(node_pool.ami_type, var.node_pools_global_ami_type) == "alinux2023" ? {
+        userdata_template_file = "${path.module}/templates/al2023_user_data.tpl"
       } : {}
     )
   }
