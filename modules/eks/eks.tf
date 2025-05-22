@@ -5,9 +5,23 @@ locals {
   }
 
   # Self-managed node groups
+
+  self_managed_node_pools = [
+    for node_pool in var.node_pools : node_pool if lookup(node_pool, "type") == "self-managed" || lookup(node_pool, "type") == null
+  ]
+
+  self_managed_node_pools_userdata_template_file = {
+    for node_pool in local.self_managed_node_pools : lookup(node_pool, "name") => coalesce(node_pool.ami_type, var.node_pools_global_ami_type) == "alinux2023" ? {
+      userdata_template_file = "${path.module}/templates/al2023_user_data.tpl"
+      userdata_template_extra_args = {
+        cluster_service_cidr = var.cluster_service_ipv4_cidr
+      }
+    } : {}
+  }
+
   worker_groups = [
-    for node_pool in var.node_pools :
-    {
+    for node_pool in local.self_managed_node_pools :
+    merge({
       name = lookup(node_pool, "name")
       additional_security_group_ids = [
         aws_security_group.node_pool_shared.id,
@@ -71,7 +85,6 @@ locals {
       ) ? "spot" : null,
       update_default_version = true
       subnets                = coalesce(lookup(node_pool, "subnets", null), var.subnets)
-
       tags = [
         for key, value in merge(
           merge(
@@ -86,7 +99,9 @@ locals {
         }
       ]
       target_group_arns = lookup(node_pool, "target_group_arns", null)
-    } if lookup(node_pool, "type") == "self-managed" || lookup(node_pool, "type") == null
+      },
+      local.self_managed_node_pools_userdata_template_file[node_pool.name]
+    )
   ]
 
   taints_effect = {
@@ -133,14 +148,14 @@ locals {
         { Name : "${var.cluster_name}-${lookup(node_pool, "name")}" }
       )
       update_default_version = true
-      version = coalesce(node_pool.version, var.cluster_version)
+      version                = coalesce(node_pool.version, var.cluster_version)
 
     } if lookup(node_pool, "type") == "eks-managed"
   ]
 }
 
 module "cluster" {
-  source  = "./vendor/modules/terraform-aws-eks"
+  source = "./vendor/modules/terraform-aws-eks"
 
   cluster_create_timeout = "30m"
   cluster_delete_timeout = "30m"
