@@ -14,7 +14,7 @@ locals {
     for node_pool in local.self_managed_node_pools : lookup(node_pool, "name") => merge(
       {
         userdata_template_extra_args = {
-          cluster_service_cidr = var.cluster_service_ipv4_cidr
+          cluster_service_cidr = coalesce(var.cluster_service_ipv4_cidr, "172.20.0.0/16")
         }
       },
       coalesce(node_pool.ami_type, var.node_pools_global_ami_type) == "alinux2023" ? {
