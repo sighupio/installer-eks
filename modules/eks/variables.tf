@@ -198,7 +198,7 @@ variable "cluster_endpoint_public_access_cidrs" {
 variable "cluster_service_ipv4_cidr" {
   type        = string
   description = "The CIDR block to assign Kubernetes service IP addresses from"
-  default     = null
+  default     = "172.20.0.0/16"
 }
 
 # Other variables
