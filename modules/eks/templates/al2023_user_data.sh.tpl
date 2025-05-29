@@ -38,13 +38,13 @@ if [[ -n "$NODE_LABELS" || -n "$REGISTER_TAINTS" || -n "$MAX_PODS" ]]; then
     flags:
 EOF
   if [[ -n "$NODE_LABELS" ]]; then
-    echo "      - \"--node-labels $NODE_LABELS\"" >> ./nodeconfig.yaml
+    echo "      - \"--node-labels $NODE_LABELS\"" >> /etc/eks/nodeconfig.yaml
   fi
   if [[ -n "$REGISTER_TAINTS" ]]; then
-    echo "      - \"--register-with-taints $REGISTER_TAINTS\"" >> ./nodeconfig.yaml
+    echo "      - \"--register-with-taints $REGISTER_TAINTS\"" >> /etc/eks/nodeconfig.yaml
   fi
   if [[ -n "$MAX_PODS" ]]; then
-    echo "      - \"--max-pods $MAX_PODS\"" >> ./nodeconfig.yaml
+    echo "      - \"--max-pods $MAX_PODS\"" >> /etc/eks/nodeconfig.yaml
   fi
 fi
 
