@@ -5,6 +5,14 @@ Content-Type: multipart/mixed; boundary="BOUNDARY"
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 
+# Your script here, e.g.:
+
+cluster_name="your-cluster-name"
+endpoint="https://your-cluster-endpoint"
+cluster_auth_base64="base64-encoded-ca"
+cluster_service_cidr="10.100.0.0/16"
+kubelet_extra_args="--node-labels=role=worker --max-pods=110"
+
 NODE_LABELS=""
 REGISTER_TAINTS=""
 MAX_PODS=""
