@@ -18,7 +18,7 @@ locals {
         }
       },
       coalesce(node_pool.ami_type, var.node_pools_global_ami_type) == "alinux2023" ? {
-        userdata_template_file = "${path.module}/templates/al2023_user_data.tpl"
+        userdata_template_file = "${path.module}/templates/al2023_user_data.sh.tpl"
       } : {}
     )
   }
