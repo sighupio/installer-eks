@@ -48,6 +48,6 @@ EOF
   fi
 fi
 
-nodeadm join --config-file /etc/eks/nodeconfig.yaml
+nodeadm init -c file:///etc/eks/nodeconfig.yaml
 
 --BOUNDARY--
