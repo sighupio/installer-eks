@@ -10,11 +10,26 @@ locals {
     for node_pool in var.node_pools : node_pool if lookup(node_pool, "type") == "self-managed" || lookup(node_pool, "type") == null
   ]
 
-   self_managed_node_pools_userdata_template_file = {
+  self_managed_node_pools_userdata_template_file = {
     for node_pool in local.self_managed_node_pools : lookup(node_pool, "name") => merge(
       {
         userdata_template_extra_args = {
           cluster_service_cidr = coalesce(var.cluster_service_ipv4_cidr, "172.20.0.0/16")
+          node_labels = [
+            for k, v in merge(
+              {
+                "sighup.io/cluster"   = var.cluster_name
+                "sighup.io/node_pool" = lookup(node_pool, "name")
+                "node.kubernetes.io/lifecycle" = coalesce(
+                  lookup(node_pool, "spot_instance", null),
+                  false
+                ) ? "spot" : ""
+              },
+              lookup(node_pool, "labels", null) != null ? node_pool["labels"] : {}
+            ) : "${k}=${v}"
+          ]
+          taints   = node_pool["taints"]
+          max_pods = lookup(node_pool, "max_pods", null)
         }
       },
       coalesce(node_pool.ami_type, var.node_pools_global_ami_type) == "alinux2023" ? {
@@ -60,11 +75,7 @@ locals {
             ) : "${k}=${v}"
           ]
         ),
-        length(
-          lookup(
-            node_pool, "taints", null
-          ) != null ? node_pool["taints"] : []
-        ) > 0 ? " --register-with-taints ${join(",", lookup(node_pool, "taints"))}" : "",
+        length(node_pool["taints"]) > 0 ? " --register-with-taints ${join(",", lookup(node_pool, "taints"))}" : "",
         lookup(node_pool, "max_pods", null) != null ? " --max-pods ${lookup(node_pool, "max_pods")}" : "",
       )
       public_ip        = false
@@ -191,8 +202,8 @@ module "cluster" {
   vpc_id          = var.vpc_id
 
   # self-managed node groups
-  worker_groups                        = var.node_pools_launch_kind == "launch_configurations" || var.node_pools_launch_kind == "both" ? local.worker_groups : []
-  worker_groups_launch_template        = var.node_pools_launch_kind == "launch_templates" || var.node_pools_launch_kind == "both" ? local.worker_groups : []
+  worker_groups                        = []
+  worker_groups_launch_template        = local.worker_groups
   workers_group_defaults               = {}
   worker_additional_security_group_ids = [aws_security_group.node_pool_shared.id]
   worker_sg_ingress_from_port          = 22
