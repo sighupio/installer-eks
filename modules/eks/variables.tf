@@ -55,7 +55,7 @@ variable "node_pools" {
     volume_type       = optional(string, "gp2")
     subnets           = optional(list(string), null) # null to use default upstream configuration
     labels            = optional(map(string))
-    taints            = optional(list(string))
+    taints            = optional(list(string), [])
     tags              = optional(map(string))
     target_group_arns = optional(list(string))
     additional_firewall_rules = optional(
