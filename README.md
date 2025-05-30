@@ -71,6 +71,12 @@ Please refer to each module documentation and the [examples](examples/) folder f
 
 > You can follow the [SD on EKS quick start guide][sd-eks-quickstart] for a more detailed walkthrough
 
+> [!WARNING]
+> The `installer-eks` versions prior to 3.2.1 are incompatible with `self-managed` nodes using the `alinux2023` AMI type. This issue occurs because Amazon Linux 2023-based EKS AMIs have [deprecated the `bootstrap.sh`](https://github.com/sighupio/installer-eks/issues/88) script in favor of the new `nodeadm` system for node initialization.
+>
+> **Temporary Workaround:** If you must use older `installer-eks` versions with `self-managed` nodes, we recommend using the `alinux2` AMI type instead.
+
+
 ## Useful links
 
 - [EKS pricing](https://aws.amazon.com/eks/pricing/)
