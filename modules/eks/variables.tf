@@ -208,6 +208,7 @@ variable "ssh_to_nodes_allowed_cidr_blocks" {
   type        = list(string)
   default     = null
 }
+
 variable "cluster_enabled_log_types" {
   description = "List of log types that will be enabled for the EKS cluster. Can be a subset of ['api', 'audit', 'authenticator', 'controllerManager', 'scheduler'] or an empty list."
   type        = list(string)
@@ -218,7 +219,6 @@ variable "cluster_enabled_log_types" {
     condition     = length(var.cluster_enabled_log_types) == 0 || alltrue([for val in var.cluster_enabled_log_types : contains(["api", "audit", "authenticator", "controllerManager", "scheduler"], val)])
     error_message = "The log type must be one of the following: api, audit, authenticator, controllerManager, scheduler, or the list must be empty."
   }
-
 }
 
 variable "cluster_iam_role_name" {
@@ -242,3 +242,14 @@ variable "node_pools_global_ami_type" {
     error_message = "The global AMI type must be either 'alinux2' or 'alinux2023'."
   }
 }
+
+variable "workers_group_defaults" {
+  type = any
+  description = "Override default values for self-managed eks node pool."
+  default = {
+    metadata_http_endpoint               = "enabled"
+    metadata_http_tokens                 = "required"
+    metadata_http_put_response_hop_limit = 2 # As recommended by AWS https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-new-instances.html#set-imdsv2-account-defaults
+  }
+}
+
