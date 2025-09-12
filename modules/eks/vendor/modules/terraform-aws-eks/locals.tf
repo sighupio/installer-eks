@@ -25,7 +25,10 @@ locals {
 
   worker_groups_platforms = [for x in concat(var.worker_groups, var.worker_groups_launch_template) : try(x.platform, var.workers_group_defaults["platform"], var.default_platform)]
 
-  worker_ami_name_filter         = coalesce(var.worker_ami_name_filter, "amazon-eks-node-${coalesce(var.cluster_version, "cluster_version")}-v*")
+ worker_ami_name_filter         = coalesce(
+    var.worker_ami_name_filter,
+    "amazon-eks-node-al2023-arm64-standard-${coalesce(var.cluster_version, "cluster_version")}-v*"
+  )  
   worker_ami_name_filter_windows = coalesce(var.worker_ami_name_filter_windows, "Windows_Server-2019-English-Core-EKS_Optimized-${coalesce(var.cluster_version, "cluster_version")}-*")
 
   ec2_principal     = "ec2.${data.aws_partition.current.dns_suffix}"

@@ -31,6 +31,9 @@ The installer is composed of three terraform modules:
 
 Click on each module to see its full documentation.
 
+> [!CAUTION]
+> Starting from kubernetes 1.33 amy type `alinux2` will not be available anymore as specified in the chapter for kubernetes 1.33 in [Review release notes for Kubernetes versions on standard support][kubernetes-version-standard]
+
 ## Architecture
 
 The [EKS module][eks-module] deploys an **EKS** cluster.
@@ -97,6 +100,8 @@ Please refer to each module documentation and the [examples](examples/) folder f
 [furyagent]: https://github.com/sighupio/furyagent
 [tunnelblick]: https://tunnelblick.net/downloads.html
 [openvpn-connect]: https://openvpn.net/vpn-client/
+
+[kubernetes-version-standard]: https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions-standard.html
 
 <!-- </SD-DOCS> -->
 <!-- <FOOTER> -->
