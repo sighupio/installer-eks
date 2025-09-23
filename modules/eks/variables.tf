@@ -253,3 +253,14 @@ variable "workers_group_defaults" {
   }
 }
 
+variable "node_groups_defaults" {
+  type = any
+  description = "Override default values for self-managed eks node pool."
+  default = {
+    create_launch_template               = true
+    metadata_http_endpoint               = "enabled"
+    metadata_http_tokens                 = "required"
+    metadata_http_put_response_hop_limit = 2 # As recommended by AWS https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-new-instances.html#set-imdsv2-account-defaults
+  }
+}
+

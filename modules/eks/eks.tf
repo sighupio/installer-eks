@@ -211,7 +211,7 @@ module "cluster" {
 
   # eks-managed node groups
   node_groups          = local.node_groups
-  node_groups_defaults = {}
+  node_groups_defaults = var.node_groups_defaults
 
   write_kubeconfig = false
 }
