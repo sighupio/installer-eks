@@ -14,15 +14,15 @@ export AWS_REGION=<YOUR_REGION>
 
 # Bring up the vpc
 cd examples/vpc
-terraform init
-terraform apply
+tofu init
+tofu apply
 
 # Bring up the vpn, but only if you plan to spin a private cluster
 cd examples/vpn
 cp main.auto.tfvars.dist main.auto.tfvars
 # TASK: fill in main.auto.tfvars with your data
-terraform init
-terraform apply
+tofu init
+tofu apply
 
 # Create a OpenVPN client certificate using furyagent
 furyagent configure openvpn-client --config=./secrets/furyagent.yml --client-name test > /tmp/fury-example-test.ovpn
@@ -30,15 +30,17 @@ furyagent configure openvpn-client --config=./secrets/furyagent.yml --client-nam
 
 # Create a kubernetes cluster. Pick eks-private if you plan to spin a private cluster, or eks-public otherwise.
 cd ../eks-private
-terraform init
-terraform apply
+tofu init
+tofu apply
 
 # Once all the above is done you can dump the kube config to a file of your choice
-terraform output -raw kubeconfig > /var/tmp/.kubeconfig
+tofu output -raw kubeconfig > /var/tmp/.kubeconfig
 
 # Last but not least, you can verify your cluster is up and running
 KUBECONFIG=/var/tmp/.kubeconfig kubectl get nodes
 
 # Destroy the cluster
-terraform destroy
+tofu destroy
 ```
+
+> **Note**: You can use `terraform` instead of `tofu` if you prefer, but OpenTofu is now supported and recommended.
