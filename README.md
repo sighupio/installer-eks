@@ -91,7 +91,7 @@ Please refer to each module documentation and the [examples](examples/) folder f
 <!-- Links -->
 
 [eks installer docs]: https://docs.kubernetesfury.com/docs/installers/managed/eks/
-[sd-eks-quickstart]: https://docs.kubernetesfury.com/docs/fury-on-eks
+[sd-eks-quickstart]: https://docs.sighup.io/docs/getting-started/distro-on-eks
 [vpc-module]: https://github.com/sighupio/installer-eks/tree/master/modules/vpc
 [vpn-module]: https://github.com/sighupio/installer-eks/tree/master/modules/vpn
 [eks-module]: https://github.com/sighupio/installer-eks/tree/master/modules/eks
