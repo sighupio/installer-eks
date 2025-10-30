@@ -53,7 +53,7 @@ The bastion host includes an OpenVPN instance easily manageable by using [furyag
 ### Requirements
 
 - **AWS Access Credentials** of an AWS Account with the following [IAM permissions](https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md).
-- **terraform** `>=1.3.0`
+- **OpenTofu** `>=1.10.0` or **Terraform** `>=1.3.0` .
 - `ssh` or **OpenVPN Client** - [Tunnelblick][tunnelblick] (on macOS) or [OpenVPN Connect][openvpn-connect] (for other OS) are recommended.
 
 ### Create EKS Cluster
@@ -90,8 +90,8 @@ Please refer to each module documentation and the [examples](examples/) folder f
 
 <!-- Links -->
 
-[eks installer docs]: https://docs.kubernetesfury.com/docs/installers/managed/eks/
-[sd-eks-quickstart]: https://docs.kubernetesfury.com/docs/fury-on-eks
+[eks installer docs]: https://docs.sighup.io/docs/components/installers/eks-installer
+[sd-eks-quickstart]: https://docs.sighup.io/docs/getting-started/distro-on-eks
 [vpc-module]: https://github.com/sighupio/installer-eks/tree/master/modules/vpc
 [vpn-module]: https://github.com/sighupio/installer-eks/tree/master/modules/vpn
 [eks-module]: https://github.com/sighupio/installer-eks/tree/master/modules/eks
