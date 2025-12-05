@@ -56,7 +56,7 @@ module "fury_private_example" {
   source = "../../modules/eks"
 
   cluster_name               = var.cluster_name # make sure to use the same name you used in the VPC and VPN module
-  cluster_version            = "1.33"
+  cluster_version            = "1.34"
   cluster_log_retention_days = 1
 
   subnets                 = data.terraform_remote_state.vpc.outputs.private_subnets
