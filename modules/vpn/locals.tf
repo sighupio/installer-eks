@@ -1,16 +1,14 @@
 locals {  
   os              = data.external.os.result.os  
   arch            = data.external.os.result.arch  
-  furyagent_version = "v0.2.2"  
-  # Map macOS architectures to amd64 since furyagent only provides darwin-amd64 for older releases
-  furyagent_arch = lower(local.os) == "darwin" ? "amd64" : lower(local.arch)  
+  furyagent_version = "v0.4.0"
 
 
   # Download furyagent to temp location if no custom path provided    
-  local_furyagent = var.vpn_furyagent_path != null ? var.vpn_furyagent_path : "${path.root}/.terraform/tmp/furyagent-${local.furyagent_version}-${lower(local.os)}-${lower(local.furyagent_arch)}"    
+  local_furyagent = var.vpn_furyagent_path != null ? var.vpn_furyagent_path : "${path.root}/.terraform/tmp/furyagent-${local.furyagent_version}-${lower(local.os)}-${lower(local.arch)}"    
       
   # GitHub releases URL for download    
-  furyagent_download_url = "https://github.com/sighupio/furyagent/releases/download/${local.furyagent_version}/furyagent-${lower(local.os)}-${lower(local.furyagent_arch)}"    
+  furyagent_download_url = "https://github.com/sighupio/furyagent/releases/download/${local.furyagent_version}/furyagent-${lower(local.os)}-${lower(local.arch)}"    
   
   vpc_cidr_block = data.aws_vpc.this.cidr_block  
   
