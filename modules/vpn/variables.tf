@@ -93,3 +93,9 @@ variable "vpn_iam_user_name_override" {
   description = "Override the name of the IAM user, if not set it will use the cluster name"
   default     = ""
 }
+
+variable "vpn_furyagent_path" {  
+  description = "Custom path to furyagent binary. If null, will download from GitHub releases"  
+  type        = string  
+  default     = null  
+}

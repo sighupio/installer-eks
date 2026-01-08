@@ -163,7 +163,19 @@ resource "local_file" "sshkeys" {
   filename = "${path.root}/ssh-users.yml"
 }
 
+# Download furyagent if no custom path provided  
+resource "null_resource" "download_furyagent" {  
+  count = var.vpn_furyagent_path == null ? 1 : 0  
+    
+  provisioner "local-exec" {  
+    command = "mkdir -p $(dirname ${local.local_furyagent}) && curl -L -o ${local.local_furyagent} ${local.furyagent_download_url} && chmod +x ${local.local_furyagent}"  
+  }  
+}  
+
+
 resource "null_resource" "init" {
+  depends_on = [null_resource.download_furyagent]  
+
   triggers = {
     "init" : "just-once",
   }
@@ -173,6 +185,8 @@ resource "null_resource" "init" {
 }
 
 resource "null_resource" "ssh_users" {
+  depends_on = [null_resource.download_furyagent]  
+
   triggers = {
     "sync-users" : join(",", local.users),
     "sync-operator" : var.vpn_operator_name
