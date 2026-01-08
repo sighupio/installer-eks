@@ -39,5 +39,4 @@ module "vpn" {
   vpn_subnetwork_cidr = "192.168.200.0/24"
   vpn_ssh_users       = var.vpn_ssh_users
 
-  vpn_furyagent_path = "/Users/filipporavaglia/work/installer-eks/modules/vpn/bin/furyagent-darwin-arm64"  
 }
