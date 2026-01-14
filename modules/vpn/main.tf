@@ -168,7 +168,7 @@ resource "null_resource" "download_furyagent" {
   count = var.vpn_furyagent_path == null ? 1 : 0  
     
   provisioner "local-exec" {  
-    command = "mkdir -p $(dirname ${local.local_furyagent}) && curl -L -o ${local.local_furyagent} ${local.furyagent_download_url} && chmod +x ${local.local_furyagent}"  
+    command = "mkdir -p \"$(dirname \"${local.local_furyagent}\")\" && curl -L -o \"${local.local_furyagent}\" \"${local.furyagent_download_url}\" && chmod +x \"${local.local_furyagent}\""
   }  
 }  
 
