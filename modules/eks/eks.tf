@@ -101,10 +101,7 @@ locals {
       subnets                = coalesce(lookup(node_pool, "subnets", null), var.subnets)
       tags = [
         for key, value in merge(
-          merge(
-            local.default_node_tags,
-            var.tags
-          ),
+          local.default_node_tags,
           coalesce(lookup(node_pool, "tags", null), {})
           ) : {
           key                 = key
