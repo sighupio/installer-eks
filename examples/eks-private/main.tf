@@ -56,7 +56,7 @@ module "fury_private_example" {
   source = "../../modules/eks"
 
   cluster_name               = var.cluster_name # make sure to use the same name you used in the VPC and VPN module
-  cluster_version            = "1.34"
+  cluster_version            = "1.35"
   cluster_log_retention_days = 1
 
   subnets                 = data.terraform_remote_state.vpc.outputs.private_subnets
@@ -65,6 +65,8 @@ module "fury_private_example" {
   cluster_endpoint_private_access_cidrs = data.terraform_remote_state.vpn.outputs.vpn_instances_private_ips_as_cidrs
 
   ssh_public_key = tls_private_key.ssh.public_key_openssh
+
+  node_pools_global_ami_type = "alinux2023"
 
   node_pools = [
     {
@@ -92,7 +94,7 @@ module "fury_private_example" {
       }
       labels : {
         "node.kubernetes.io/role" : "app"
-        "sighup.io/fury-release" : "v1.25.0"
+        "sighup.io/fury-release" : "v1.35.0"
       }
       taints : []
       tags : {
@@ -108,7 +110,7 @@ module "fury_private_example" {
       spot_instance : true # optionally create spot instances
       # ami_id : "ami-01eb5348cab8e4902" # optionally define a custom AMI
       volume_size : 100
-      container_runtime = "docker"
+      container_runtime = "containerd"
       additional_firewall_rules : {
         cidr_blocks = [
           {
@@ -127,7 +129,7 @@ module "fury_private_example" {
       }
       labels : {
         "node.kubernetes.io/role" : "app"
-        "sighup.io/fury-release" : "v1.25.0"
+        "sighup.io/fury-release" : "v1.35.0"
       }
       tags : {
         "node-tags" : "exists"
@@ -139,7 +141,51 @@ module "fury_private_example" {
       min_size : 1
       max_size : 2
       instance_type : "m5.large"
-      volume_size : 10
+      volume_size : 20
+    },
+    {
+      name : "m5-node-pool-arm64-self-managed"
+      min_size : 1
+      max_size : 2
+      instance_type : "t4g.large"
+      volume_size : 20
+      labels : {
+        "node.kubernetes.io/role" : "m5-node-pool-arm64-self-managed"
+        "sighup.io/fury-release" : "v1.35.0"
+      }
+    },
+    {
+      type : "eks-managed"
+      name : "m5-node-pool-eks-managed"
+      min_size : 1
+      max_size : 2
+      instance_type : "m5.large"
+      subnets : null
+      labels : {
+        "node.kubernetes.io/role" : "m5-node-pool-eks-managed"
+        "sighup.io/fury-release" : "v1.35.0"
+      }
+      taints : []
+      tags : {
+        "node-tags" : "exists"
+      }
+    },
+    {
+      type : "eks-managed"
+      name : "m5-node-pool-arm64-eks-managed"
+      min_size : 1
+      max_size : 2
+      instance_type : "t4g.large"
+      spot_instance : true
+      subnets : null
+      labels : {
+        "node.kubernetes.io/role" : "m5-node-pool-arm64-eks-managed"
+        "sighup.io/fury-release" : "v1.35.0"
+      }
+      taints : []
+      tags : {
+        "node-tags" : "exists"
+      }
     },
     {
       name : "m5-node-pool-null-config"

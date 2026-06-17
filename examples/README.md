@@ -42,5 +42,3 @@ KUBECONFIG=/var/tmp/.kubeconfig kubectl get nodes
 # Destroy the cluster
 tofu destroy
 ```
-
-> **Note**: You can use `terraform` instead of `tofu` if you prefer, but OpenTofu is now supported and recommended.
