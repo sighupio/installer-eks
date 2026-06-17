@@ -108,7 +108,7 @@ module "fury_public_example" {
       spot_instance : true # optionally create spot instances
       # ami_id : "ami-01eb5348cab8e4902" # optionally define a custom AMI
       volume_size : 100
-      container_runtime = "docker"
+      container_runtime = "containerd"
       additional_firewall_rules : {
         cidr_blocks = [
           {
@@ -169,7 +169,6 @@ module "fury_public_example" {
       max_pods : null
       volume_size : 100
       subnets : null
-      labels : null
       taints : null
       tags : null
       additional_firewall_rules : null
@@ -182,7 +181,6 @@ module "fury_public_example" {
       name : "m5-node-pool-arm64-self-managed"
       min_size : 1
       max_size : 2
-      ami_id           = "ami-05fe3c54efa9eab36"
       instance_type : "t4g.large"
       volume_size : 20
       labels : {
@@ -211,7 +209,6 @@ module "fury_public_example" {
       name : "m5-node-pool-arm64-eks-managed"
       min_size : 1
       max_size : 2
-      ami_id           = "ami-05fe3c54efa9eab36"
       instance_type : "t4g.large"
       spot_instance : true # optionally create spot instances
       subnets : null
@@ -229,7 +226,6 @@ module "fury_public_example" {
       name : "m5-node-pool-alinux2023-arm64-eks-managed"
       min_size : 1
       max_size : 2
-      ami_id           = "ami-05fe3c54efa9eab36"
       instance_type : "t4g.large"
       spot_instance : true # optionally create spot instances
       subnets : null
