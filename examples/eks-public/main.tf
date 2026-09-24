@@ -49,7 +49,7 @@ module "fury_public_example" {
   source = "../../modules/eks"
 
   cluster_name               = var.cluster_name # make sure to use the same name you used in the VPC and VPN module
-  cluster_version            = "1.35"
+  cluster_version            = "1.36"
   cluster_log_retention_days = 1
 
   # availability_zone_names = ["eu-west-1a", "eu-west-1b"]
@@ -92,7 +92,7 @@ module "fury_public_example" {
       }
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-self-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
       taints : []
       tags : {
@@ -127,7 +127,7 @@ module "fury_public_example" {
       }
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-spot-self-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
       tags : {
         "node-tags" : "exists"
@@ -142,7 +142,7 @@ module "fury_public_example" {
       volume_size : 20
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-min-config-self-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
     },
     {
@@ -154,7 +154,7 @@ module "fury_public_example" {
       volume_size : 20
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-alinux2023-self-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
     },
     {
@@ -174,7 +174,7 @@ module "fury_public_example" {
       additional_firewall_rules : null
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-null-config-self-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
     },
     {
@@ -185,7 +185,7 @@ module "fury_public_example" {
       volume_size : 20
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-arm64-self-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
     },
     {
@@ -197,7 +197,7 @@ module "fury_public_example" {
       subnets : null
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-eks-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
       taints : []
       tags : {
@@ -214,7 +214,7 @@ module "fury_public_example" {
       subnets : null
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-arm64-eks-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
       taints : []
       tags : {
@@ -231,7 +231,7 @@ module "fury_public_example" {
       subnets : null
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-alinux2023-arm64-eks-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
       taints : []
       tags : {
@@ -249,7 +249,7 @@ module "fury_public_example" {
       subnets : null
       labels : {
         "node.kubernetes.io/role" : "m5-node-pool-alinux2023-eks-managed"
-        "sighup.io/fury-release" : "v1.35.0"
+        "sighup.io/fury-release" : "v1.36.0"
       }
       taints : []
       tags : {
